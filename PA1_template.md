@@ -1,6 +1,6 @@
 # Peer Assessment 1
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:31:21 2015. 
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:37:21 2015. 
 
 ### Loading and preprocessing the data
 
@@ -113,7 +113,7 @@ na.s
 
 #### Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-I am wrtinging called *impute* to impute missing values based on the 5 minute inteval
+I am wrtinging called *impute* to impute missing values based on the 5 minute inteval. The *avgs* dataset is used to obtain the mean for a given inteval.  The function takes two parameters: steps and a time interval. If steps is not NA, use the value, otherwise, obtain correspoding mean for the interval from *avgs*.
 
 
 ```r

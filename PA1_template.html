@@ -203,7 +203,7 @@ hr {
 <body>
 <h1>Peer Assessment 1</h1>
 
-<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:31:21 2015. </p>
+<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:37:21 2015. </p>
 
 <h3>Loading and preprocessing the data</h3>
 
@@ -296,7 +296,7 @@ na.s
 
 <h4>Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.</h4>
 
-<p>I am wrtinging called <em>impute</em> to impute missing values based on the 5 minute inteval</p>
+<p>I am wrtinging called <em>impute</em> to impute missing values based on the 5 minute inteval. The <em>avgs</em> dataset is used to obtain the mean for a given inteval.  The function takes two parameters: steps and a time interval. If steps is not NA, use the value, otherwise, obtain correspoding mean for the interval from <em>avgs</em>.</p>
 
 <pre><code class="r">impute &lt;- function(steps, interval) {
     value &lt;- &quot;&quot;
