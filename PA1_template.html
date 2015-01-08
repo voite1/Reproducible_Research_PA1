@@ -203,7 +203,7 @@ hr {
 <body>
 <h1>Peer Assessment 1</h1>
 
-<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 18:24:09 2015. </p>
+<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:22:06 2015. </p>
 
 <h3>Loading and preprocessing the data</h3>
 
@@ -261,10 +261,10 @@ qplot(steps, binwidth=800, xlab=&quot;Daily Steps&quot;)
 
 <p>The <em>aggregate</em> function is used to derive average of the steps per 5 minute interval. <em>ggplot2</em> library is used to creage time series plot.</p>
 
-<pre><code class="r">avgs &lt;- aggregate(x=list(msteps=data$steps), by=list(interval=data$interval), 
+<pre><code class="r">avgs &lt;- aggregate(x=list(steps=data$steps), by=list(interval=data$interval), 
         FUN=mean, na.rm=TRUE)
 
-ggplot(avgs, aes(x=interval, y=msteps)) + geom_line() + xlab(&quot;Interval (5-min)&quot;) + 
+ggplot(avgs, aes(x=interval, y=steps)) + geom_line() + xlab(&quot;Interval (5-min)&quot;) + 
        ylab(&quot;Steps (average)&quot;) 
 </code></pre>
 
@@ -274,14 +274,83 @@ ggplot(avgs, aes(x=interval, y=msteps)) + geom_line() + xlab(&quot;Interval (5-m
 
 <p>Displaying the interval that contains the most daily steps: the interval number, and the number of steps. We display the whole row anlog with the row number form the <em>avgs</em>.</p>
 
-<pre><code class="r">avgs[which.max(avgs$msteps),]
+<pre><code class="r">avgs[which.max(avgs$steps),]
 </code></pre>
 
-<pre><code>##     interval msteps
-## 104      835  206.2
+<pre><code>##     interval steps
+## 104      835 206.2
 </code></pre>
 
 <h3>Imputing missing values</h3>
+
+<h4>Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)</h4>
+
+<p>Using <em>is.na()</em> function allows to find out the nmber of records with missing values for steps.</p>
+
+<pre><code class="r">na.s = sum(is.na(data$steps))
+na.s
+</code></pre>
+
+<pre><code>## [1] 2304
+</code></pre>
+
+<h4>Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.</h4>
+
+<p>I am wrtinging called <em>impute</em> to impute missing values based on the 5 minute inteval</p>
+
+<pre><code class="r">mmean &lt;- aggregate(steps ~ interval, data, mean)
+impute &lt;- function(steps, interval) {
+    filled &lt;- &quot;&quot;
+    if (!is.na(steps))
+        filled &lt;- c(steps)
+    else
+        filled &lt;- (avgs[avgs$interval==interval, &quot;steps&quot;])
+    return(filled)
+}
+</code></pre>
+
+<h4>Create a new dataset that is equal to the original dataset but with the missing data filled in.</h4>
+
+<p>Creating the dataset called <em>data1</em> with imputed values for all the NA&#39;s.  The check is executed to assure that indeed, there are no NA&#39;s in the newly created dataset.</p>
+
+<pre><code class="r">data1 &lt;- data
+data1$steps &lt;- mapply(impute, data1$steps, data1$interval)
+data1$date &lt;- as.Date(data1$date)
+
+# Checking for is.na
+sum(is.na(data1$steps))
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<h4>Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.</h4>
+
+<pre><code class="r">new.steps &lt;- tapply(data1$steps, data1$date, FUN=sum)
+qplot(new.steps, binwidth=800, xlab=&quot;# of steps per day&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-10"/> </p>
+
+<pre><code class="r">mean(new.steps)
+</code></pre>
+
+<pre><code>## [1] 10766
+</code></pre>
+
+<pre><code class="r">median(new.steps)
+</code></pre>
+
+<pre><code>## [1] 10766
+</code></pre>
+
+<h4>Do these values differ from the estimates from the first part of the assignment?</h4>
+
+<p>The values for <em>mean</em> and <em>median</em> are higher than in the original computations. This is due, most likely, to the fact that all the NA&#39;s now have values, which are grater than zero.</p>
+
+<h4>What is the impact of imputing missing data on the estimates of the total daily number of steps?</h4>
+
+<p>The values for <em>mean</em> and <em>median</em> are higher than those executed on the <em>data</em> dataset that contains NA&#39;s.</p>
 
 <h3>Are there any differences in activity patters between weekdays and weekends?</h3>
 

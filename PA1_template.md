@@ -1,6 +1,6 @@
 # Peer Assessment 1
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 18:24:09 2015. 
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:22:06 2015. 
 
 ### Loading and preprocessing the data
 
@@ -72,10 +72,10 @@ The *aggregate* function is used to derive average of the steps per 5 minute int
 
 
 ```r
-avgs <- aggregate(x=list(msteps=data$steps), by=list(interval=data$interval), 
+avgs <- aggregate(x=list(steps=data$steps), by=list(interval=data$interval), 
         FUN=mean, na.rm=TRUE)
 
-ggplot(avgs, aes(x=interval, y=msteps)) + geom_line() + xlab("Interval (5-min)") + 
+ggplot(avgs, aes(x=interval, y=steps)) + geom_line() + xlab("Interval (5-min)") + 
        ylab("Steps (average)") 
 ```
 
@@ -87,14 +87,97 @@ Displaying the interval that contains the most daily steps: the interval number,
 
 
 ```r
-avgs[which.max(avgs$msteps),]
+avgs[which.max(avgs$steps),]
 ```
 
 ```
-##     interval msteps
-## 104      835  206.2
+##     interval steps
+## 104      835 206.2
 ```
 
 ### Imputing missing values
+
+#### Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+
+Using *is.na()* function allows to find out the nmber of records with missing values for steps.
+
+
+```r
+na.s = sum(is.na(data$steps))
+na.s
+```
+
+```
+## [1] 2304
+```
+
+#### Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+
+I am wrtinging called *impute* to impute missing values based on the 5 minute inteval
+
+
+```r
+mmean <- aggregate(steps ~ interval, data, mean)
+impute <- function(steps, interval) {
+    filled <- ""
+    if (!is.na(steps))
+        filled <- c(steps)
+    else
+        filled <- (avgs[avgs$interval==interval, "steps"])
+    return(filled)
+}
+```
+#### Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+Creating the dataset called *data1* with imputed values for all the NA's.  The check is executed to assure that indeed, there are no NA's in the newly created dataset.
+
+
+```r
+data1 <- data
+data1$steps <- mapply(impute, data1$steps, data1$interval)
+data1$date <- as.Date(data1$date)
+
+# Checking for is.na
+sum(is.na(data1$steps))
+```
+
+```
+## [1] 0
+```
+
+#### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
+
+
+```r
+new.steps <- tapply(data1$steps, data1$date, FUN=sum)
+qplot(new.steps, binwidth=800, xlab="# of steps per day")
+```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
+
+```r
+mean(new.steps)
+```
+
+```
+## [1] 10766
+```
+
+```r
+median(new.steps)
+```
+
+```
+## [1] 10766
+```
+
+#### Do these values differ from the estimates from the first part of the assignment? 
+
+The values for *mean* and *median* are higher than in the original computations. This is due, most likely, to the fact that all the NA's now have values, which are grater than zero.
+
+#### What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
+The values for *mean* and *median* are higher than those executed on the *data* dataset that contains NA's.
 
 ### Are there any differences in activity patters between weekdays and weekends?
