@@ -85,7 +85,6 @@ na.s
 I am wrtinging called *impute* to impute missing values based on the 5 minute inteval
 
 ```{r}
-mmean <- aggregate(steps ~ interval, data, mean)
 impute <- function(steps, interval) {
     filled <- ""
     if (!is.na(steps))

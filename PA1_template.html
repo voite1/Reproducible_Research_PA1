@@ -203,7 +203,7 @@ hr {
 <body>
 <h1>Peer Assessment 1</h1>
 
-<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:22:06 2015. </p>
+<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:24:47 2015. </p>
 
 <h3>Loading and preprocessing the data</h3>
 
@@ -298,8 +298,7 @@ na.s
 
 <p>I am wrtinging called <em>impute</em> to impute missing values based on the 5 minute inteval</p>
 
-<pre><code class="r">mmean &lt;- aggregate(steps ~ interval, data, mean)
-impute &lt;- function(steps, interval) {
+<pre><code class="r">impute &lt;- function(steps, interval) {
     filled &lt;- &quot;&quot;
     if (!is.na(steps))
         filled &lt;- c(steps)

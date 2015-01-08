@@ -1,6 +1,6 @@
 # Peer Assessment 1
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:22:06 2015. 
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:24:47 2015. 
 
 ### Loading and preprocessing the data
 
@@ -117,7 +117,6 @@ I am wrtinging called *impute* to impute missing values based on the 5 minute in
 
 
 ```r
-mmean <- aggregate(steps ~ interval, data, mean)
 impute <- function(steps, interval) {
     filled <- ""
     if (!is.na(steps))
