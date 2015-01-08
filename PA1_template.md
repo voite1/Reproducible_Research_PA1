@@ -1,6 +1,6 @@
 # Peer Assessment 1
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:24:47 2015. 
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 22:31:21 2015. 
 
 ### Loading and preprocessing the data
 
@@ -118,12 +118,12 @@ I am wrtinging called *impute* to impute missing values based on the 5 minute in
 
 ```r
 impute <- function(steps, interval) {
-    filled <- ""
+    value <- ""
     if (!is.na(steps))
-        filled <- c(steps)
+        value <- c(steps)
     else
-        filled <- (avgs[avgs$interval==interval, "steps"])
-    return(filled)
+        value <- (avgs[avgs$interval==interval, "steps"])
+    value
 }
 ```
 #### Create a new dataset that is equal to the original dataset but with the missing data filled in.
