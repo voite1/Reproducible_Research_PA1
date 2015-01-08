@@ -1,6 +1,6 @@
 # Peer Assessment 1
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 18:17:40 2015. 
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Wed Jan 07 18:24:09 2015. 
 
 ### Loading and preprocessing the data
 
@@ -72,12 +72,11 @@ The *aggregate* function is used to derive average of the steps per 5 minute int
 
 
 ```r
-avgs <- aggregate(x=list(msteps=data$steps), 
-                  by=list(interval=data$interval), 
-                  FUN=mean, na.rm=TRUE)
+avgs <- aggregate(x=list(msteps=data$steps), by=list(interval=data$interval), 
+        FUN=mean, na.rm=TRUE)
 
-ggplot(avgs, aes(x=interval, y=msteps)) + geom_line() + 
-    xlab("Interval (5-min)") + ylab("Steps (average)") 
+ggplot(avgs, aes(x=interval, y=msteps)) + geom_line() + xlab("Interval (5-min)") + 
+       ylab("Steps (average)") 
 ```
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
@@ -88,7 +87,7 @@ Displaying the interval that contains the most daily steps: the interval number,
 
 
 ```r
-avgs[which.max(avgs$msteps), ]
+avgs[which.max(avgs$msteps),]
 ```
 
 ```
