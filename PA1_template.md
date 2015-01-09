@@ -1,10 +1,8 @@
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(cache=TRUE)
-```
+
 
 # Peer Assessment 1 
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is `r date()`. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 18:48:35 2015. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
 
 ### Loading and preprocessing the data
 
@@ -14,7 +12,8 @@ The code below downloads the data from the internet, unzips the file, and loads 
 
 Unzipping the data file and loading the *activity.csv* file into the variable called *data*.  The variable is used to hold the content of the entire file, including NA entries.
 
-```{r}
+
+```r
 unzip("activity.zip") 
 data <- read.csv("activity.csv")
 ```
@@ -23,7 +22,8 @@ data <- read.csv("activity.csv")
 
 The date field is converted to Date using *as.Date* function to assure that any date-related calculations will be executed properly.
 
-```{r}
+
+```r
 data$date <- as.Date(data$date)
 ```
 
@@ -35,20 +35,35 @@ The script below displays the histogram, mean, and median for the steps taken ea
 
 The histogram is created using *qplot* function. *tapply* function was used to sum up the number of steps per day. Additiona, all the NA entries were removed when building *steps*.
 
-```{r}
+
+```r
 steps <- tapply(data$steps, data$date, FUN=sum, na.rm=TRUE)
 library(ggplot2)
 qplot(steps, binwidth=800, xlab="Daily Steps")
 ```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 #### Calculate and report the mean and median total number of steps taken per day
 
 Calling *mean* and *median* functions on the *steps* dataset to obtain corresponding mean and median as required by the assignment.
 
 
-```{r}
+
+```r
 mean(steps)
+```
+
+```
+## [1] 9354
+```
+
+```r
 median(steps)
+```
+
+```
+## [1] 10395
 ```
 
 ### What is average daily activity patter?
@@ -57,7 +72,8 @@ median(steps)
 
 The *aggregate* function is used to derive average of the steps per 5 minute interval. *ggplot2* library is used to creage time series plot.
 
-```{r}
+
+```r
 avgs <- aggregate(x=list(steps=data$steps), by=list(interval=data$interval), 
         FUN=mean, na.rm=TRUE)
 
@@ -65,12 +81,20 @@ ggplot(avgs, aes(x=interval, y=steps)) + geom_line() + xlab("Interval (5-min)") 
        ylab("Steps (average)") 
 ```
 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 Displaying the interval that contains the most daily steps: the interval number, and the number of steps. We display the whole row anlog with the row number form the *avgs*.
 
-```{r}
+
+```r
 avgs[which.max(avgs$steps),]
+```
+
+```
+##     interval steps
+## 104      835 206.2
 ```
 
 ### Imputing missing values
@@ -79,16 +103,22 @@ avgs[which.max(avgs$steps),]
 
 Using *is.na()* function allows to find out the nmber of records with missing values for steps.
 
-```{r}
+
+```r
 na.s = sum(is.na(data$steps))
 na.s
+```
+
+```
+## [1] 2304
 ```
 
 #### Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 I am wrtinging called *impute* to impute missing values based on the 5 minute inteval. The *avgs* dataset is used to obtain the mean for a given inteval.  The function takes two parameters: steps and a time interval. If steps is not NA, use the value, otherwise, obtain correspoding mean for the interval from *avgs*.
 
-```{r}
+
+```r
 impute <- function(steps, interval) {
     value <- ""
     if (!is.na(steps))
@@ -102,7 +132,8 @@ impute <- function(steps, interval) {
 
 Creating the dataset called *data1* with imputed values for all the NA's.  The check is executed to assure that indeed, there are no NA's in the newly created dataset.
 
-```{r}
+
+```r
 data1 <- data
 data1$steps <- mapply(impute, data1$steps, data1$interval)
 data1$date <- as.Date(data1$date)
@@ -111,16 +142,35 @@ data1$date <- as.Date(data1$date)
 sum(is.na(data1$steps))
 ```
 
+```
+## [1] 0
+```
+
 #### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
 
-```{r}
+
+```r
 new.steps <- tapply(data1$steps, data1$date, FUN=sum)
 qplot(new.steps, binwidth=800, xlab="# of steps per day")
 ```
 
-```{r}
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
+
+```r
 mean(new.steps)
+```
+
+```
+## [1] 10766
+```
+
+```r
 median(new.steps)
+```
+
+```
+## [1] 10766
 ```
 
 #### Do these values differ from the estimates from the first part of the assignment? 
