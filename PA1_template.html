@@ -203,7 +203,7 @@ hr {
 <body>
 <h1>Peer Assessment 1</h1>
 
-<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 21:30:15 2015. I used <em>knitr</em> library, <em>knit2html</em> function to generate the document.  I did not use RStudio for generating this document.</p>
+<p>The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 21:58:42 2015. I used <em>knitr</em> library, <em>knit2html</em> function to generate the document.  I did not use RStudio for generating this document.</p>
 
 <h3>Loading and preprocessing the data</h3>
 
@@ -353,13 +353,25 @@ qplot(new.steps, binwidth=800, xlab=&quot;# of steps per day&quot;)
 
 <h3>Are there any differences in activity patters between weekdays and weekends?</h3>
 
-<p>A custom function is written to add a field to the <em>data1</em> data frame containing the day of the week designator. Custom function <em>is.weekend</em> is used to determine if the day of the wek is weekend or not.</p>
+<p>A code below is written to add a weekend field to the <em>data1</em> data frame containing TRUE if the date is weekend, and FALSE otherwise. </p>
 
 <h4>Create a new factor variable in the dataset with two levels - &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day.</h4>
 
 <p>Create a variable that has TRUE for weekend (Saturday and Sunday), and False otherwise.</p>
 
 <pre><code class="r">data1$weekend &lt;- as.factor(weekdays(data1$date) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))
+
+# looking at the data
+head(data1)
+</code></pre>
+
+<pre><code>##     steps       date interval weekend
+## 1 1.71698 2012-10-01        0   FALSE
+## 2 0.33962 2012-10-01        5   FALSE
+## 3 0.13208 2012-10-01       10   FALSE
+## 4 0.15094 2012-10-01       15   FALSE
+## 5 0.07547 2012-10-01       20   FALSE
+## 6 2.09434 2012-10-01       25   FALSE
 </code></pre>
 
 <h4>Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</h4>

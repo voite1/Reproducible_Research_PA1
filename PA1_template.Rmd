@@ -129,7 +129,7 @@ The values for *mean* and *median* are higher than those executed on the *data* 
 
 ### Are there any differences in activity patters between weekdays and weekends?
 
-A custom function is written to add a field to the *data1* data frame containing the day of the week designator. Custom function *is.weekend* is used to determine if the day of the wek is weekend or not.
+A code below is written to add a weekend field to the *data1* data frame containing TRUE if the date is weekend, and FALSE otherwise. 
 
 #### Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
@@ -137,6 +137,9 @@ Create a variable that has TRUE for weekend (Saturday and Sunday), and False oth
 
 ```{r}
 data1$weekend <- as.factor(weekdays(data1$date) %in% c("Saturday", "Sunday"))
+
+# looking at the data
+head(data1)
 ```
 
 #### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
