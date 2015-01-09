@@ -1,8 +1,6 @@
-
-
 # Peer Assessment 1 
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 18:48:35 2015. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 21:20:37 2015. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
 
 ### Loading and preprocessing the data
 
@@ -182,3 +180,38 @@ The values for *mean* and *median* are higher than in the original computations.
 The values for *mean* and *median* are higher than those executed on the *data* dataset that contains NA's.
 
 ### Are there any differences in activity patters between weekdays and weekends?
+
+A custom function is written to add a field to the *data1* data frame containing the day of the week designator. Custom function *is.weekend* is used to determine if the day of the wek is weekend or not.
+
+#### Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+
+Create a variable that has TRUE for weekend (Saturday and Sunday), and False otherwise.
+
+
+```r
+data1$weekend <- as.factor(weekdays(data1$date) %in% c("Saturday", "Sunday"))
+```
+
+#### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+
+Aggregate data by interval, weekend using *mean* function.  The resulting data frame *steps1* will contain processed data with *weekend* being a 2-level factor variable.
+
+
+```r
+steps1 <- aggregate(data1$steps, by = list(data1$interval, data1$weekend), mean)
+# Rename columns of resulting data frame
+names(steps1) <- c("interval", "weekend", "steps")
+```
+
+Plotting the data using base plotting system. It is much easier to do than with *ggplot2*. After about an hour of trying to work with *ggplot2*, i simply gave up on *ggplot2*. From now on, I am only using the base plotting system.
+
+
+```r
+par(mfrow = c(2, 1))
+plot(subset(steps1, weekend == FALSE)$steps, xlab = "Interval", ylab = "Weekday # of steps", type = "l")
+plot(subset(steps1, weekend == TRUE)$steps, xlab = "Interval", ylab = "Weekend # of steps", type = "l")
+```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
+
+The End.
