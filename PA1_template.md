@@ -1,6 +1,6 @@
 # Peer Assessment 1 
 
-The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 21:20:37 2015. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
+The document is created to satisfy requirements for Peers Assessment 1, Reproducible Research class offered by Coursera. Today is Thu Jan 08 21:30:15 2015. I used *knitr* library, *knit2html* function to generate the document.  I did not use RStudio for generating this document.
 
 ### Loading and preprocessing the data
 
@@ -213,5 +213,7 @@ plot(subset(steps1, weekend == TRUE)$steps, xlab = "Interval", ylab = "Weekend #
 ```
 
 ![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
+
+The data confirms the logical assumption of people woling more on weekends rather than during weekdays.  Two plots above distinclty show the difference. The graph of steps during the weekdays (upper plot) show generally smaller means than those for the weekends (lower plot)
 
 The End.

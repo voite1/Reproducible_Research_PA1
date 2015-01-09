@@ -158,4 +158,6 @@ plot(subset(steps1, weekend == TRUE)$steps, xlab = "Interval", ylab = "Weekend #
 
 ```
 
+The data confirms the logical assumption of people woling more on weekends rather than during weekdays.  Two plots above distinclty show the difference. The graph of steps during the weekdays (upper plot) show generally smaller means than those for the weekends (lower plot)
+
 The End.
